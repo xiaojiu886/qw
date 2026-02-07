@@ -1,0 +1,731 @@
+/*交流群:434862718
+非本人源，
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>千问免单卡自动互助 - 857vip.top</title>
+    <meta name="description" content="千问免单卡自动互助，复制857vip.top到浏览器打开，登录即可一键互助">
+    <style>
+        /* 全局样式重置+基础变量 */
+        :root {
+            --primary: #FF4D4F;
+            --primary-light: #FF6B6B;
+            --primary-dark: #E63946;
+            --secondary: #1890FF;
+            --secondary-light: #40A9FF;
+            --success: #52C41A;
+            --success-light: #73D13D;
+            --text-main: #333333;
+            --text-secondary: #666666;
+            --text-light: #999999;
+            --text-gray: #888888;
+            --bg-main: #F5F7FA;
+            --bg-card: #FFFFFF;
+            --bg-modal: rgba(0, 0, 0, 0.6);
+            --bg-agreement: #F8F9FA;
+            --border-radius: 16px;
+            --border-radius-sm: 8px;
+            --shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.12);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --backdrop-blur: blur(8px);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Inter", "微软雅黑", "PingFang SC", sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: var(--bg-main);
+            background-image: linear-gradient(120deg, #F8F9FA 0%, #E9EEF5 100%);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            padding-bottom: 120px;
+        }
+
+        /* 复制成功提示 */
+        .copy-tips {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.8);
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            z-index: 99999;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        /* 主容器 */
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background: var(--bg-card);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 40px 32px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+
+        .container:hover {
+            box-shadow: var(--shadow-hover);
+        }
+
+        /* 标题区域 */
+        .title-wrap {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .main-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        /* 链接复制模块 */
+        .link-card {
+            background: linear-gradient(135deg, rgba(24, 144, 255, 0.05), rgba(82, 196, 26, 0.05));
+            border: 1px solid rgba(24, 144, 255, 0.1);
+            border-radius: var(--border-radius-sm);
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 24px;
+            backdrop-filter: var(--backdrop-blur);
+        }
+
+        .link-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+
+        .link-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .link-text {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--secondary);
+            padding: 8px 16px;
+            background: rgba(24, 144, 255, 0.05);
+            border-radius: 6px;
+            border: 1px solid rgba(24, 144, 255, 0.2);
+        }
+
+        .copy-btn {
+            padding: 8px 16px;
+            background: var(--secondary);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .copy-btn:hover {
+            background: var(--secondary-light);
+        }
+
+        /* 可互助人数模块 */
+        .count-card {
+            background: linear-gradient(135deg, rgba(255, 77, 79, 0.05), rgba(24, 144, 255, 0.05));
+            border: 1px solid rgba(255, 77, 79, 0.1);
+            border-radius: var(--border-radius-sm);
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 24px;
+            backdrop-filter: var(--backdrop-blur);
+        }
+
+        .count-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .count-num {
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 2px;
+            transition: var(--transition);
+        }
+
+        .count-unit {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-left: 4px;
+        }
+
+        /* 核心按钮 */
+        .btn-wrap {
+            margin-bottom: 36px;
+        }
+
+        .primary-btn {
+            width: 100%;
+            height: 56px;
+            line-height: 56px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+            color: #FFFFFF;
+            border: none;
+            border-radius: var(--border-radius-sm);
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 12px rgba(255, 77, 79, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .primary-btn:hover {
+            background: linear-gradient(90deg, var(--primary-light), var(--primary));
+            box-shadow: 0 6px 16px rgba(255, 77, 79, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .primary-btn:active {
+            transform: translateY(0);
+        }
+
+        /* 日志模块 */
+        .log-box {
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            border-radius: var(--border-radius-sm);
+            padding: 24px;
+            height: 280px;
+            overflow-y: auto;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: var(--backdrop-blur);
+        }
+
+        .log-box::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .log-box::-webkit-scrollbar-track {
+            background: #F1F1F1;
+            border-radius: 3px;
+        }
+
+        .log-box::-webkit-scrollbar-thumb {
+            background: #DCDCDC;
+            border-radius: 3px;
+        }
+
+        .log-box::-webkit-scrollbar-thumb:hover {
+            background: var(--text-light);
+        }
+
+        .log-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .log-title::before {
+            content: "";
+            width: 4px;
+            height: 16px;
+            background: var(--secondary);
+            border-radius: 2px;
+        }
+
+        .log-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .log-item {
+            font-size: 14px;
+            line-height: 1.6;
+            padding-bottom: 12px;
+            border-bottom: 1px dashed rgba(0, 0, 0, 0.05);
+            animation: logFade 0.5s ease-in-out;
+        }
+
+        .log-time {
+            color: var(--text-light);
+            margin-right: 12px;
+            min-width: 110px;
+            display: inline-block;
+        }
+
+        .log-tips {
+            color: var(--text-secondary);
+        }
+
+        .log-success {
+            color: var(--success);
+            font-weight: 500;
+        }
+
+        .log-count {
+            color: var(--secondary);
+            font-weight: 500;
+        }
+
+        /* 新增免责协议模块 */
+        .agreement-box {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: var(--bg-agreement);
+            border-top: 1px solid rgba(0, 0, 0, 0.08);
+            padding: 16px 24px;
+            z-index: 9999;
+            max-width: 600px;
+        }
+
+        .agreement-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .agreement-title::before {
+            content: "";
+            width: 3px;
+            height: 14px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        .agreement-content {
+            font-size: 12px;
+            color: var(--text-gray);
+            line-height: 1.6;
+            text-align: justify;
+        }
+
+        /* 弹窗通用样式 */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-modal);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            padding: 24px;
+            backdrop-filter: var(--backdrop-blur);
+        }
+
+        .modal-card {
+            width: 100%;
+            max-width: 420px;
+            background: var(--bg-card);
+            border-radius: var(--border-radius);
+            padding: 32px;
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.16);
+            text-align: center;
+            animation: modalFade 0.3s ease-in-out;
+        }
+
+        .modal-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 16px;
+        }
+
+        .modal-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 24px;
+        }
+
+        .modal-desc b {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .modal-desc .link-highlight {
+            color: var(--secondary);
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .modal-btn {
+            width: 100%;
+            height: 48px;
+            line-height: 48px;
+            background: var(--secondary);
+            color: #FFFFFF;
+            border: none;
+            border-radius: var(--border-radius-sm);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 8px;
+        }
+
+        .modal-btn.primary {
+            background: var(--primary);
+        }
+
+        .modal-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .modal-btn:active {
+            transform: translateY(0);
+        }
+
+        /* 动画效果 */
+        @keyframes logFade {
+            from {opacity: 0; transform: translateY(10px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+
+        @keyframes modalFade {
+            from {opacity: 0; transform: scale(0.95);}
+            to {opacity: 1; transform: scale(1);}
+        }
+
+        @keyframes numScroll {
+            from {opacity: 0.8; transform: scale(0.98);}
+            to {opacity: 1; transform: scale(1);}
+        }
+
+        @keyframes fadeIn {
+            from {opacity: 0; transform: translate(-50%, -60%);}
+            to {opacity: 1; transform: translate(-50%, -50%);}
+        }
+
+        .num-animate {
+            animation: numScroll 0.3s ease-in-out;
+        }
+
+        /* 响应式适配 */
+        @media (max-width: 480px) {
+            :root {
+                --border-radius: 12px;
+                --border-radius-sm: 6px;
+            }
+            body {
+                padding-bottom: 150px;
+            }
+            .container {
+                padding: 24px 20px;
+            }
+            .main-title {
+                font-size: 24px;
+            }
+            .link-text {
+                font-size: 16px;
+            }
+            .count-num {
+                font-size: 28px;
+            }
+            .primary-btn {
+                height: 52px;
+                line-height: 52px;
+                font-size: 16px;
+            }
+            .log-box {
+                padding: 20px 16px;
+                height: 240px;
+            }
+            .modal-card {
+                padding: 24px;
+            }
+            .agreement-box {
+                padding: 12px 20px;
+            }
+        }
+    </style>
+    <!-- 引入阿里图标库（互助/浏览器/复制图标） -->
+    <link rel="stylesheet" href="https://at.alicdn.com/t/c/font_4060272_9f0yf598t7.css">
+</head>
+<body>
+    <!-- 复制成功提示 -->
+    <div class="copy-tips" id="copyTips">复制成功！前往浏览器打开</div>
+
+    <div class="container">
+        <!-- 标题区域 -->
+        <div class="title-wrap">
+            <h1 class="main-title">千问免单卡自动互助</h1>
+        </div>
+
+        <!-- 链接复制模块 -->
+        <div class="link-card">
+            <p class="link-desc">复制下方链接到浏览器打开，参与互助</p>
+            <div class="link-box">
+                <div class="link-text" id="copyLink">857vip.top</div>
+                <button class="copy-btn" id="copyBtn">
+                    <i class="iconfont icon-fuzhi"></i>
+                    复制链接
+                </button>
+            </div>
+        </div>
+
+        <!-- 可互助人数模块 -->
+        <div class="count-card">
+            <p class="count-desc">当前可支持新用户互助数</p>
+            <div>
+                <span class="count-num" id="userCount">3868</span>
+                <span class="count-unit">人</span>
+            </div>
+        </div>
+
+        <!-- 核心按钮 -->
+        <div class="btn-wrap">
+            <button class="primary-btn" id="helpBtn">
+                <i class="iconfont icon-zhuli"></i>
+                立即获取自动互助
+            </button>
+        </div>
+
+        <!-- 日志模块 -->
+        <div class="log-box">
+            <h3 class="log-title">互助操作日志</h3>
+            <div class="log-list" id="logList">
+                <div class="log-item">
+                    <span class="log-time">2026-02-07 10:00:00</span>
+                    <span class="log-tips">千问免单卡互助通道已开启，等待操作</span>
+                </div>
+                <div class="log-item">
+                    <span class="log-time">2026-02-07 10:00:05</span>
+                    <span class="log-count">系统实时更新：当前支持3868位新用户参与千问免单卡互助</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 新增 底部固定免责协议模块 -->
+    <div class="agreement-box">
+        <div class="agreement-title">免责协议</div>
+        <div class="agreement-content">
+            1、本页面仅提供千问免单卡互助链接引导，不参与任何平台运营，无官方合作关系；2、用户自愿复制链接前往浏览器操作，操作过程中的账号安全、数据风险由用户自行承担；3、本页面仅为技术展示，不对互助结果做任何承诺，因平台规则变更导致的互助失败与本页面无关；4、用户使用本页面即表示知晓并同意本协议，如有异议请勿使用本页面功能。
+        </div>
+    </div>
+
+    <!-- 浏览器打开引导弹窗 -->
+    <div class="modal" id="browserModal" style="display: flex;">
+        <div class="modal-card">
+            <i class="iconfont icon-liulanqi" style="font-size: 48px; color: var(--secondary); margin-bottom: 16px;"></i>
+            <h2 class="modal-title">请用浏览器打开本页面</h2>
+            <p class="modal-desc">当前为微信/小程序内置浏览器，<b>无法正常完成千问免单卡互助</b>！<br>点击下方复制链接，前往浏览器打开 <span class="link-highlight">857vip.top</span> 参与互助</p>
+            <button class="modal-btn primary" id="copyModalBtn">复制857vip.top</button>
+            <button class="modal-btn" id="knowBtn">我已知晓</button>
+        </div>
+    </div>
+
+    <!-- 登录引导弹窗 -->
+    <div class="modal" id="loginModal">
+        <div class="modal-card">
+            <h2 class="modal-title">请先完成账号登录</h2>
+            <p class="modal-desc">获取千问免单卡自动互助需先验证账号身份，点击下方按钮跳转到登录页面，完成登录后即可一键解锁互助功能</p>
+            <button class="modal-btn" id="goLoginBtn">立即前往登录</button>
+        </div>
+    </div>
+
+    <script>
+        // 核心元素获取
+        const helpBtn = document.getElementById('helpBtn');
+        const browserModal = document.getElementById('browserModal');
+        const loginModal = document.getElementById('loginModal');
+        const knowBtn = document.getElementById('knowBtn');
+        const goLoginBtn = document.getElementById('goLoginBtn');
+        const logList = document.getElementById('logList');
+        const userCount = document.getElementById('userCount');
+        const copyBtn = document.getElementById('copyBtn');
+        const copyModalBtn = document.getElementById('copyModalBtn');
+        const copyLink = document.getElementById('copyLink').innerText;
+        const copyTips = document.getElementById('copyTips');
+        // 千问免单卡互助跳转链接
+        const helpLink = 'https://b.qianwen.com/dragon/vBqu5CZ39/QNXTSYwoBlR18V8/pCTTgDEbEJ?qk_r_web_str=OPT%3AHIDDEN%401%7COPT%3ATOAST%400&click_src=hx0llc8cn1at&click_subsrc=p4jjfer59waj&qshare_entry=clipboard&entry=newyear_drinks&inviteCode=3e39d1b6cd806f6076ee3dc51a083e6d&actType=ShanGou&qwcontainer=qk&s_f=cp';
+        
+        // 全局状态
+        let isLogin = false; // 登录状态
+        let currentCount = 3868; // 初始可互助人数
+        const countMin = 2000; // 人数下限
+
+        // 复制链接核心方法
+        function copyLinkToClipboard() {
+            navigator.clipboard.writeText(copyLink).then(() => {
+                // 显示复制成功提示
+                copyTips.style.display = 'block';
+                setTimeout(() => {
+                    copyTips.style.display = 'none';
+                }, 2000);
+                // 记录日志
+                addLog(`已成功复制互助链接：${copyLink}，前往浏览器打开即可参与`, 'success');
+            }).catch(err => {
+                addLog('链接复制失败，请手动复制857vip.top', 'tips');
+            });
+        }
+
+        // 1. 添加日志方法（带淡入动画）
+        function addLog(text, type = 'tips') {
+            const now = new Date();
+            // 格式化时间：YYYY-MM-DD HH:MM:SS
+            const timeStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,0)}-${String(now.getDate()).padStart(2,0)} ${String(now.getHours()).padStart(2,0)}:${String(now.getMinutes()).padStart(2,0)}:${String(now.getSeconds()).padStart(2,0)}`;
+            // 创建日志项
+            const logItem = document.createElement('div');
+            logItem.className = 'log-item';
+            logItem.innerHTML = `<span class="log-time">${timeStr}</span><span class="log-${type}">${text}</span>`;
+            // 追加到日志列表
+            logList.appendChild(logItem);
+            // 日志滚动到底部
+            logList.scrollTop = logList.scrollHeight;
+        }
+
+        // 2. 更新互助人数（带数字滚动动画）
+        function updateCount() {
+            // 随机波动：-60 ~ +150 之间
+            const randomDelta = Math.floor(Math.random() * 211) - 60;
+            currentCount = Math.max(countMin, currentCount + randomDelta);
+            // 添加数字动画
+            userCount.classList.add('num-animate');
+            userCount.innerText = currentCount;
+            // 移除动画类，方便下次触发
+            setTimeout(() => {
+                userCount.classList.remove('num-animate');
+            }, 300);
+            // 记录日志
+            addLog(`系统实时更新：当前支持${currentCount}位新用户参与千问免单卡互助`, 'count');
+        }
+
+        // 3. 定时自动更新人数（12-18秒随机间隔，模拟真实实时数据）
+        function autoUpdateCount() {
+            const randomInterval = Math.floor(Math.random() * 6001) + 12000;
+            setTimeout(() => {
+                updateCount();
+                autoUpdateCount();
+            }, randomInterval);
+        }
+
+        // 4. 复制按钮点击事件（页面内+弹窗内）
+        copyBtn.addEventListener('click', copyLinkToClipboard);
+        copyModalBtn.addEventListener('click', () => {
+            copyLinkToClipboard();
+            browserModal.style.display = 'none';
+        });
+
+        // 5. 浏览器引导弹窗-已知晓按钮
+        knowBtn.addEventListener('click', () => {
+            browserModal.style.display = 'none';
+            addLog('用户已知晓，需复制857vip.top到浏览器中操作千问免单卡互助功能');
+        });
+
+        // 6. 点击获取互助按钮事件
+        helpBtn.addEventListener('click', () => {
+            if (!isLogin) {
+                // 未登录：显示登录弹窗
+                loginModal.style.display = 'flex';
+                addLog('检测到账号未登录，弹出千问免单卡互助登录验证窗口');
+            } else {
+                // 已登录：跳转互助链接+更新人数
+                addLog(`账号已验证，当前可参与互助${currentCount}人，正在跳转千问免单卡互助通道...`);
+                // 新标签页打开互助链接
+                window.open(helpLink, '_blank');
+                // 互助后小幅减少人数（8-30人），模拟消耗
+                const consumeNum = Math.floor(Math.random() * 23) + 8;
+                currentCount = Math.max(countMin, currentCount - consumeNum);
+                // 更新页面数字
+                userCount.innerText = currentCount;
+                // 记录互助成功日志
+                setTimeout(() => {
+                    addLog(`千问免单卡自动互助完成！通道已跳转，当前可互助数更新为${currentCount}人`, 'success');
+                }, 1500);
+            }
+        });
+
+        // 7. 点击弹窗登录按钮事件
+        goLoginBtn.addEventListener('click', () => {
+            addLog('用户点击登录，跳转至千问免单卡账号验证页面');
+            window.open(helpLink, '_blank');
+            loginModal.style.display = 'none';
+            // 模拟登录成功（实际项目对接后端登录状态）
+            setTimeout(() => {
+                isLogin = true;
+                addLog('千问免单卡账号登录验证成功，可正常使用自动互助功能', 'success');
+            }, 2000);
+        });
+
+        // 8. 点击弹窗外部关闭
+        [browserModal, loginModal].forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                    addLog(`用户关闭${modal.id === 'browserModal' ? '浏览器打开引导' : '登录验证'}窗口`);
+                }
+            });
+        });
+
+        // 页面加载完成后初始化
+        window.addEventListener('load', () => {
+            // 启动定时更新人数
+            autoUpdateCount();
+            // 初始化页面加载日志
+            addLog('千问免单卡互助页面加载完成，复制857vip.top到浏览器参与互助', 'tips');
+        });
+
+        // 防止移动端点击穿透
+        document.addEventListener('touchstart', () => {}, {passive: true});
+    </script>
+</body>
+</html>
